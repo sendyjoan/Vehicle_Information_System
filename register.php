@@ -108,7 +108,7 @@
         </a>
       </div>
 
-      <a href="login.html" class="text-center">I already have a account</a>
+      <a href="login.php" class="text-center">I already have a account</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->

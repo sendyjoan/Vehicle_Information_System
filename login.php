@@ -1,3 +1,35 @@
+<?php
+  $validation = true;
+  if (isset($_POST['signin'])) {
+    include_once("config.php");
+    if (validateEmail($_POST)) {
+      echo "<script>
+         alert('Proses Login Gagal! Email Tidak Terdaftar! Silahkan Isi Kembali Email Anda')
+           </script>";
+    }elseif (validatePass($_POST)) {
+      echo "<script>
+         alert('Proses Login Gagal! Password Salah! Silahkan Isi Kembali Password Anda')
+           </script>";
+    }else{
+      $email = $_POST['email'];
+      $password = $_POST['password'];
+      $cek = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE email = '$email'");
+      
+      if( mysqli_num_rows($cek) === 1 ) {
+          $row = mysqli_fetch_assoc($cek);
+          if( password_verify($password, $row["password"]) ) {
+            session_start();
+            $_SESSION['iduser'] = $row['id'];
+            $_SESSION['isAdmin'] = $row['isAdmin'];
+            echo "<script>
+            alert('Proses Login Berhasil!')
+            document.location.href = 'index.php';
+              </script>";
+          }
+      }
+    }
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +59,7 @@
 
       <form action="" method="post">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Username atau Email">
+          <input type="email" class="form-control" name="email" placeholder="Username atau Email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -35,7 +67,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" name="password" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -53,7 +85,7 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" name="signin" class="btn btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -73,7 +105,7 @@
         <a href="">I forgot my password</a>
       </p>
       <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new account</a>
+        <a href="register.php" class="text-center">Register a new account</a>
       </p>
     </div>
     <!-- /.card-body -->

@@ -29,4 +29,40 @@ function registrasi($data){
     return $affect;
 }
 
+//Login
+//Validate Email
+function validateEmail($data){
+    global $mysqli;
+
+    $email = $data['email'];
+    $email = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE email = '$email'");
+    $email = mysqli_num_rows($email);
+
+    if ($email === 0) {
+        return true;
+    } else {
+        return false;
+    }
+    
+}
+
+//Validate Password
+function validatePass($data){
+    global $mysqli;
+
+    $email = $data['email'];
+    $password = $data['password'];
+    $cek = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE email = '$email'");
+    
+    if( mysqli_num_rows($cek) === 1 ) {
+        $row = mysqli_fetch_assoc($cek);
+        if( password_verify($password, $row["password"]) ) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    return false;
+}
 ?>
