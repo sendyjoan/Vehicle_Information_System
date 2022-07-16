@@ -1,11 +1,28 @@
 <?php 
   $validation = true;
   if (isset($_POST['register'])) {
+    include_once("config.php");
     var_dump($_POST);
     if ($_POST['password'] === $_POST['repassword']) {
-      
+      $email = $_POST['email'];
+      $result = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE email = '$email'");
+      if (mysqli_fetch_assoc($result)) {
+        echo "<script>
+         alert('Proses Registrasi Gagal! Email Sudah Digunakan! Silahkan Isi Kembali Email Anda')
+           </script>";
+        $validation = false;
+      }elseif( registrasi($_POST) > 0){
+        echo "<script>
+            alert('Selamat anda telah terdaftar! Silahkan melakukan Login!')
+            document.location.href = 'login.php';
+            </script>";
+      }else{
+        echo "<script>
+            alert('Proses Registrasi Gagal!')
+            </script>";
+      }
     }else{
-      echo '<script> alert("Password Tidak Sesuai! Silahkan Isi Kembali Password Anda"); </script>';
+      echo '<script> alert("Proses Registrasi Gagal! Password Tidak Sesuai! Silahkan Isi Kembali Password Anda"); </script>';
       $validation = false;
     }
   }
