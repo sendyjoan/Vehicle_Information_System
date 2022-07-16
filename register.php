@@ -25,6 +25,13 @@
       echo '<script> alert("Proses Registrasi Gagal! Password Tidak Sesuai! Silahkan Isi Kembali Password Anda"); </script>';
       $validation = false;
     }
+  }else{
+    session_start();
+    if (isset($_SESSION['iduser'])) {
+      echo "<script>
+            document.location.href = 'index.php';
+              </script>";
+    }
   }
 ?>
 <!DOCTYPE html>

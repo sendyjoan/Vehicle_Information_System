@@ -28,6 +28,13 @@
           }
       }
     }
+  }else{
+    session_start();
+    if (isset($_SESSION['iduser'])) {
+      echo "<script>
+            document.location.href = 'index.php';
+              </script>";
+    }
   }
 ?>
 <!DOCTYPE html>
