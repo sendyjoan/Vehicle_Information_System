@@ -6,18 +6,24 @@
           document.location.href = 'login.php';
             </script>";
   }else{
+    // Mengambil Data User
+    $id = $_SESSION['iduser'];
+    $user = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE id = '$id'");
+    $user = mysqli_fetch_array($user);
     if ($_SESSION['isAdmin'] == 1) {
       //Mengetahui Jumlah Admin
       $admin = mysqli_query($mysqli,"SELECT * FROM tb_users WHERE isAdmin = 1");
       $admin = mysqli_num_rows($admin);
       //Mengetahui Jumlah Kendaraan
-      $kendaraan = mysqli_query($mysqli, "SELECT * FROM kendaraan");
+      $kendaraan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan");
       $kendaraan = mysqli_num_rows($kendaraan);
       //Mengetahui Jumlah Pengguna
       $users = mysqli_query($mysqli,"SELECT * FROM tb_users WHERE isAdmin = 0");
       $users = mysqli_num_rows($users);
     }else{
-
+      //Mengetahui Jumlah Kendaraan
+      $kendaraan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan WHERE id_user = '$id'");
+      $kendaraan = mysqli_num_rows($kendaraan);
     }
   }
 ?>
@@ -88,7 +94,7 @@
           <img src="public/img/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="./profile.html" class="d-block">(Isi Nama User)</a>
+          <a href="./profile.html" class="d-block"><?php echo $user['nama'] ?></a>
         </div>
       </div>
 
@@ -207,6 +213,21 @@
               <div class="info-box-content">
                 <span class="info-box-text">Jumlah Pengguna</span>
                 <span class="info-box-number"><?php echo $users ?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <?php } ?>
+          <?php if ($_SESSION['isAdmin'] == 0) {?>
+            <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Jumlah Kendaraan Anda</span>
+                <span class="info-box-number"><?php echo $kendaraan ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
