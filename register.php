@@ -3,7 +3,7 @@
   if (isset($_POST['register'])) {
     var_dump($_POST);
     if ($_POST['password'] === $_POST['repassword']) {
-      echo 'sama';
+      
     }else{
       echo '<script> alert("Password Tidak Sesuai! Silahkan Isi Kembali Password Anda"); </script>';
       $validation = false;
