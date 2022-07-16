@@ -1,3 +1,26 @@
+<?php
+  include_once("config.php");
+  session_start();
+  if (!isset($_SESSION['iduser'])) {
+    echo "<script>
+          document.location.href = 'login.php';
+            </script>";
+  }else{
+    if ($_SESSION['isAdmin'] == 1) {
+      //Mengetahui Jumlah Admin
+      $admin = mysqli_query($mysqli,"SELECT * FROM tb_users WHERE isAdmin = 1");
+      $admin = mysqli_num_rows($admin);
+      //Mengetahui Jumlah Kendaraan
+      $kendaraan = mysqli_query($mysqli, "SELECT * FROM kendaraan");
+      $kendaraan = mysqli_num_rows($kendaraan);
+      //Mengetahui Jumlah Pengguna
+      $users = mysqli_query($mysqli,"SELECT * FROM tb_users WHERE isAdmin = 0");
+      $users = mysqli_num_rows($users);
+    }else{
+
+    }
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,15 +153,14 @@
       <div class="container-fluid">
         <!-- Info boxes -->
         <div class="row">
+          <?php if ($_SESSION['isAdmin']) {?>
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box">
               <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
-
               <div class="info-box-content">
                 <span class="info-box-text">Jumlah Admin</span>
                 <span class="info-box-number">
-                  10
-                  <small>%</small>
+                  <?php echo $admin ?>
                 </span>
               </div>
               <!-- /.info-box-content -->
@@ -159,17 +181,19 @@
             <!-- /.info-box -->
           </div>
           <!-- /.col -->
+          <?php } ?>
 
           <!-- fix for small devices only -->
           <div class="clearfix hidden-md-up"></div>
 
+          <?php if ($_SESSION['isAdmin']) {?>
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
               <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Jumlah Kendaraan</span>
-                <span class="info-box-number">760</span>
+                <span class="info-box-number"><?php echo $kendaraan ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -182,13 +206,14 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Jumlah Pengguna</span>
-                <span class="info-box-number">2,000</span>
+                <span class="info-box-number"><?php echo $users ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
           </div>
           <!-- /.col -->
+          <?php } ?>
         </div>
         <!-- /.row -->
 
