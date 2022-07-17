@@ -65,7 +65,7 @@
       <a class="h1"><b>Portal SIKKB</b></a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Register a new account</p>
+      <p class="login-box-msg">Pendaftaran Akun Baru</p>
 
       <form action="" method="post">
         <div class="input-group mb-3">
@@ -111,7 +111,7 @@
         </div>
       </form>
 
-      <a href="login.php" class="text-center">I already have a account</a>
+      <a href="login.php" class="text-center">Saya Telah Memiliki Akun</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->

@@ -70,7 +70,7 @@
       <a class="h1"><b>Portal SIKKB</b></a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Silahkan Masuk Untuk Memulai</p>
 
       <form action="" method="post">
         <div class="input-group mb-3">
@@ -101,10 +101,10 @@
       </form>
 
       <p class="mb-1">
-        <a href="">I forgot my password</a>
+        <a href="">Saya Lupa Password Saya</a>
       </p>
       <p class="mb-0">
-        <a href="register.php" class="text-center">Register a new account</a>
+        <a href="register.php" class="text-center">Mendaftar Akun Baru</a>
       </p>
     </div>
     <!-- /.card-body -->
