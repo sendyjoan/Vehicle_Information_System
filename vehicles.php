@@ -29,6 +29,22 @@
             </script>
           ";
       }
+    }elseif (isset($_POST['edit'])) {
+      if( editkendaraan($_POST) > 0 ) {
+        echo "
+          <script>
+            alert('Kendaraan Berhasil Diedit!');
+            document.location.href = 'vehicles.php';
+          </script>
+        ";
+    } else {
+        echo "
+          <script>
+            alert('Kendaraan Gagal Diedit!');
+            document.location.href = 'vehicles.php';
+          </script>
+        ";
+    }
     }
     // Mengambil Data User
     $id = $_SESSION['iduser'];
@@ -258,7 +274,7 @@
                                   View
                               </a>
                               <?php if ($_SESSION['isAdmin'] == 0) {?>
-                                <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-edit">
+                                <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-edit-<?php echo $isi['id'] ?>">
                                   <i class="fas fa-pencil-alt">
                                   </i>
                                   Edit
@@ -313,23 +329,68 @@
           <!-- /.modal -->
 
           <!-- modal delete -->
-          <div class="modal fade" id="modal-edit">
-            <div class="modal-dialog">
-              <div class="modal-content bg-default">
+          <div class="modal fade" id="modal-edit-<?php echo $isimodal['id'] ?>">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
                 <div class="modal-header">
-                  <h4 class="modal-title">Hapus Data</h4>
+                  <h4 class="modal-title">Edit Kendaraan</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <h4 style="text-align: center;">Anda yakin ingin menghapus?</h4>
+                  <form action="" method="post">
+                    <h5 style="text-align: center;">Silahkan Memasukkan Data</h5>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">No. Polisi</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="nopol" value="<?php echo $isimodal['nopol'] ?>" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Merk</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"name="merk" value="<?php echo $isimodal['merk'] ?>" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Warna</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="warna" value="<?php echo $isimodal['warna'] ?>" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Isi Silinder</span>
+                      </div>
+                      <input type="number" min="100" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="isisilinder" value="<?php echo $isimodal['isisilinder'] ?>" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Tahun Pembuatan</span>
+                      </div>
+                      <input type="number" min="2000" max="3000" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="tahunpembuatan" value="<?php echo $isimodal['tahunpembuatan'] ?>" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">No. Rangka</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="norangka" value="<?php echo $isimodal['norangka'] ?>" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">No. Mesin</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="nomesin" value="<?php echo $isimodal['nomesin'] ?>" required>
+                    </div>
+                      <input type="hidden" name="idkendaraan" value="<?php echo $isimodal['id'] ?>">
+                      <button type="submit" name="edit" class="btn btn-primary float-right">Submit</button>
+                    </div>
+                  </form>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
-                <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-outline-light" data-dismiss="modal">Batal</button>
-                  <button type="button" class="btn btn-outline-light">Hapus</button>
-                </div>
-              </div>
               <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
