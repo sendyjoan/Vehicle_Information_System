@@ -6,6 +6,14 @@
           document.location.href = 'login.php';
             </script>";
   }else{
+    if (isset($_GET['delid'])) {
+      $id = $_GET['delid'];
+      mysqli_query($mysqli, "DELETE FROM tb_kendaraan WHERE id='$id'");
+      echo "<script>
+            alert('Proses Delete Berhasil!')
+            document.location.href = 'vehicles.php';
+              </script>";
+    }
     // Mengambil Data User
     $id = $_SESSION['iduser'];
     $user = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE id = '$id'");
@@ -103,6 +111,7 @@
               </p>
             </a>
           </li>
+          <?php if ($_SESSION['isAdmin'] == 1) { ?>
           <li class="nav-item menu-open">
             <a href="./users.php" class="nav-link">
               <i class="nav-icon fas fa-solid fa-users"></i>
@@ -111,6 +120,7 @@
               </p>
             </a>
           </li>
+          <?php } ?>
           <li class="nav-item menu-open">
             <a href="./vehicles.php" class="nav-link active">
               <i class="nav-icon fas fa-solid fa-car"></i>
@@ -232,12 +242,12 @@
                                   View
                               </a>
                               <?php if ($_SESSION['isAdmin'] == 0) {?>
-                                <a class="btn btn-info btn-sm" href="#">
+                                <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-edit">
                                   <i class="fas fa-pencil-alt">
                                   </i>
                                   Edit
                                 </a>
-                                <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-danger">
+                                <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-danger-<?php echo $isi['id'] ?>">
                                     <i class="fas fa-trash">
                                     </i>
                                     Delete
@@ -285,12 +295,11 @@
             <!-- /.modal-dialog -->
           </div>
           <!-- /.modal -->
-          <?php } ?>
 
           <!-- modal delete -->
-          <div class="modal fade" id="modal-danger">
+          <div class="modal fade" id="modal-edit">
             <div class="modal-dialog">
-              <div class="modal-content bg-danger">
+              <div class="modal-content bg-default">
                 <div class="modal-header">
                   <h4 class="modal-title">Hapus Data</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -310,6 +319,31 @@
             <!-- /.modal-dialog -->
           </div>
           <!-- /.modal -->
+
+          <!-- modal delete -->
+          <div class="modal fade" id="modal-danger-<?php echo $isimodal['id'] ?>">
+            <div class="modal-dialog">
+              <div class="modal-content bg-danger">
+                <div class="modal-header">
+                  <h4 class="modal-title">Hapus Data</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h4 style="text-align: center;">Anda yakin ingin menghapus?</h4>
+                </div>
+                <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-outline-light" data-dismiss="modal">Batal</button>
+                  <a href="vehicles.php?delid=<?php echo $isimodal['id']; ?>" class="btn btn-outline-light" role="button">Hapus</a>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+          <?php } ?>
     
         </section>
 
