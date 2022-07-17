@@ -6,6 +6,14 @@
           document.location.href = 'login.php';
             </script>";
   }else{
+    if (isset($_GET['delid'])) {
+      $id = $_GET['delid'];
+      mysqli_query($mysqli, "DELETE FROM tb_users WHERE id='$id'");
+      echo "<script>
+            alert('Proses Delete Berhasil!')
+            document.location.href = 'users.php';
+              </script>";
+    }
     //Mengambil Data User
     $id = $_SESSION['iduser'];
     $user = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE id = '$id'");
@@ -68,7 +76,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index.html" class="brand-link">
+    <a href="index.php" class="brand-link">
       <img src="public/img/favicon.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Portal | SIKKB</span>
     </a>
@@ -81,7 +89,7 @@
           <img src="public/img/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="./profile.html" class="d-block"><?php echo $user['nama'] ?></a>
+          <a href="./profile.php" class="d-block"><?php echo $user['nama'] ?></a>
         </div>
       </div>
 
@@ -91,7 +99,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <a href="./index.html" class="nav-link">
+            <a href="./index.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -99,7 +107,7 @@
             </a>
           </li>
           <li class="nav-item menu-open">
-            <a href="./users.html" class="nav-link active">
+            <a href="./users.php" class="nav-link active">
               <i class="nav-icon fas fa-solid fa-users"></i>
               <p>
                 Data Pengguna
@@ -107,7 +115,7 @@
             </a>
           </li>
           <li class="nav-item menu-open">
-            <a href="./vehicles.html" class="nav-link">
+            <a href="./vehicles.php" class="nav-link">
               <i class="nav-icon fas fa-solid fa-car"></i>
               <p>
                 Data Kendaraan
@@ -164,9 +172,6 @@
               <table class="table table-striped projects">
                   <thead>
                       <tr>
-                          <th style="width: 1%">
-                              No.
-                          </th>
                           <th style="width: 20%">
                               Nama Lengkap
                           </th>
@@ -184,9 +189,6 @@
                   <tbody>
                     <?php while($isi = mysqli_fetch_array($users)) { ?>
                       <tr>
-                          <td>
-                              1
-                          </td>
                           <td>
                               <a>
                                   <?php echo $isi['nama'] ?>
@@ -211,7 +213,7 @@
                                   </i>
                                   View
                               </a>
-                              <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-danger">
+                              <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-danger-<?php echo $isi['id'] ?>">
                                   <i class="fas fa-trash">
                                   </i>
                                   Delete
@@ -287,7 +289,9 @@
           <!-- /.modal -->
 
           <!-- modal delete -->
-          <div class="modal fade" id="modal-danger">
+          <?php $del = mysqli_query($mysqli, "SELECT id FROM tb_users");
+          while ($d = mysqli_fetch_array($del)) {?>
+          <div class="modal fade" id="modal-danger-<?php echo $d['id']; ?>">
             <div class="modal-dialog">
               <div class="modal-content bg-danger">
                 <div class="modal-header">
@@ -301,13 +305,14 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-outline-light" data-dismiss="modal">Batal</button>
-                  <a href="index.php" class="btn btn-outline-light" role="button">Hapus</a>
+                  <a href="users.php?delid=<?php echo $d['id']; ?>" class="btn btn-outline-light" role="button">Hapus</a>
                 </div>
               </div>
               <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
           </div>
+          <?php } ?>
           <!-- /.modal -->
     
         </section>
