@@ -1,7 +1,7 @@
 <?php
   include_once("config.php");
   session_start();
-  if (!isset($_SESSION['iduser']) && $_SESSION['isAdmin'] == 1) {
+  if (!isset($_SESSION['iduser']) || $_SESSION['isAdmin'] == 0) {
     echo "<script>
           document.location.href = 'login.php';
             </script>";
