@@ -1,6 +1,6 @@
 <?php
-  include_once("config.php");
   session_start();
+  include_once("config.php");
   if (!isset($_SESSION['iduser'])) {
     echo "<script>
           document.location.href = 'login.php';
@@ -13,6 +13,22 @@
             alert('Proses Delete Berhasil!')
             document.location.href = 'vehicles.php';
               </script>";
+    }elseif (isset($_POST['add'])) {
+      if( addkendaraan($_POST) > 0 ) {
+          echo "
+            <script>
+              alert('Kendaraan Berhasil Ditambahkan!');
+              document.location.href = 'vehicles.php';
+            </script>
+          ";
+      } else {
+          echo "
+            <script>
+              alert('Kendaraan Gagal Ditambahkan!');
+              document.location.href = 'vehicles.php';
+            </script>
+          ";
+      }
     }
     // Mengambil Data User
     $id = $_SESSION['iduser'];
@@ -177,7 +193,7 @@
 
               <?php if ($_SESSION['isAdmin'] == 0) {?>
               <div class="create text-right">
-                <a class="btn btn-info btn-sm" href="#">
+                <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-create">
                   <i class="fas fa-pencil-alt">
                   </i>
                   Tambah
@@ -345,6 +361,73 @@
           <!-- /.modal -->
           <?php } ?>
     
+          <!-- Modal Create -->
+          <div class="modal fade" id="modal-create">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Tambah Kendaraan</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="" method="post">
+                    <h5 style="text-align: center;">Silahkan Memasukkan Data</h5>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">No. Polisi</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="nopol" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Merk</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"name="merk" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Warna</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="warna" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Isi Silinder</span>
+                      </div>
+                      <input type="number" min="100" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="isisilinder" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Tahun Pembuatan</span>
+                      </div>
+                      <input type="number" min="2000" max="3000" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="tahunpembuatan" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">No. Rangka</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="norangka" required>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">No. Mesin</span>
+                      </div>
+                      <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="nomesin" required>
+                    </div>
+                      <button type="submit" name="add" class="btn btn-primary float-right">Submit</button>
+                    </div>
+                  </form>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+      <!-- /.modal -->
         </section>
 
       </div><!--/. container-fluid -->
