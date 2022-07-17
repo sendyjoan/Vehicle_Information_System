@@ -1,3 +1,16 @@
+<?php 
+session_start();
+include_once("config.php");
+if (!isset($_SESSION['iduser'])) {
+  echo "<script>
+        document.location.href = 'login.php';
+          </script>";
+}else{
+  $id = $_SESSION['iduser'];
+  $user = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE id = '$id'");
+  $user = mysqli_fetch_array($user);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,7 +78,7 @@
           <img src="public/img/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="./profile.html" class="d-block">(Isi Nama User)</a>
+          <a href="./profile.html" class="d-block"><?php echo $user['nama'] ?></a>
         </div>
       </div>
 
@@ -134,17 +147,13 @@
             <div class="text-center">
             </div>
 
-            <h3 class="profile-username text-center">Nina Mcintire</h3>
-            <p class="text-muted text-center">Software Engineer</p>
+            <h3 class="profile-username text-center"><?php echo $user['nama'] ?></h3>
+            <p class="text-muted text-center"><?php if ($_SESSION['isAdmin'] == 1) {
+              echo 'Administrator';
+            }else{ echo 'Pengguna'; }?></p>
             <ul class="list-group list-group-unbordered mb-3">
               <li class="list-group-item">
-                <b>Followers</b> <a class="float-right">1,322</a>
-              </li>
-              <li class="list-group-item">
-                <b>Following</b> <a class="float-right">543</a>
-              </li>
-              <li class="list-group-item">
-                <b>Friends</b> <a class="float-right">13,287</a>
+                <b>Email</b> <a class="float-right"><?php echo $user['email'] ?></a>
               </li>
             </ul>
 
