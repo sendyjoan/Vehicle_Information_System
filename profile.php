@@ -65,7 +65,7 @@ if (!isset($_SESSION['iduser'])) {
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index.html" class="brand-link">
+    <a href="index.php" class="brand-link">
       <img src="public/img/favicon.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Portal | SIKKB</span>
     </a>
@@ -78,7 +78,7 @@ if (!isset($_SESSION['iduser'])) {
           <img src="public/img/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="./profile.html" class="d-block"><?php echo $user['nama'] ?></a>
+          <a href="./profile.php" class="d-block"><?php echo $user['nama'] ?></a>
         </div>
       </div>
 
@@ -88,23 +88,25 @@ if (!isset($_SESSION['iduser'])) {
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <a href="./index.html" class="nav-link">
+            <a href="./index.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
               </p>
             </a>
           </li>
+          <?php if ($_SESSION['isAdmin'] == 1) { ?>
           <li class="nav-item menu-open">
-            <a href="./users.html" class="nav-link">
+            <a href="./users.php" class="nav-link">
               <i class="nav-icon fas fa-solid fa-users"></i>
               <p>
                 Data Pengguna
               </p>
             </a>
           </li>
+          <?php } ?>
           <li class="nav-item menu-open">
-            <a href="./vehicles.html" class="nav-link">
+            <a href="./vehicles.php" class="nav-link">
               <i class="nav-icon fas fa-solid fa-car"></i>
               <p>
                 Data Kendaraan
@@ -129,7 +131,7 @@ if (!isset($_SESSION['iduser'])) {
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="./index.php">Home</a></li>
               <li class="breadcrumb-item active">Profile</li>
             </ol>
           </div><!-- /.col -->

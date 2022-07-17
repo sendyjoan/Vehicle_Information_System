@@ -84,4 +84,24 @@ function addkendaraan($data){
     $status = mysqli_affected_rows($mysqli);
     return $status;
 }
+
+// EDIT KENDARAAN
+function editkendaraan($data){
+    global $mysqli;
+
+    $nopol = $data['nopol'];
+    $merk = $data['merk'];
+    $warna = $data['warna'];
+    $isisilinder = $data['isisilinder'];
+    $tahunpembuatan = $data['tahunpembuatan'];
+    $norangka = $data['norangka'];
+    $nomesin = $data['nomesin'];
+    $idkendaraan = $data['idkendaraan'];
+
+    $query = "UPDATE tb_kendaraan SET nopol = '$nopol', merk = '$merk', warna = '$warna', isisilinder = '$isisilinder', tahunpembuatan = '$tahunpembuatan', norangka = '$norangka', nomesin = '$nomesin' WHERE id = '$idkendaraan'";
+    mysqli_query($mysqli, $query);
+    
+    $status = mysqli_affected_rows($mysqli);
+    return $status;
+}
 ?>
