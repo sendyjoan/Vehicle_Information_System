@@ -65,4 +65,23 @@ function validatePass($data){
 
     return false;
 }
+
+//ADD KENDARAAN
+function addkendaraan($data){
+    global $mysqli;
+
+    $nopol = $data['nopol'];
+    $merk = $data['merk'];
+    $warna = $data['warna'];
+    $isisilinder = $data['isisilinder'];
+    $tahunpembuatan = $data['tahunpembuatan'];
+    $norangka = $data['norangka'];
+    $nomesin = $data['nomesin'];
+
+    $iduser = $_SESSION['iduser'];
+
+    mysqli_query($mysqli, "INSERT INTO tb_kendaraan (nopol, tahunpembuatan, isisilinder, norangka, nomesin, warna, merk, id_user) VALUES ('$nopol', '$tahunpembuatan', '$isisilinder', '$norangka', '$nomesin', '$warna', '$merk', '$iduser')");
+    $status = mysqli_affected_rows($mysqli);
+    return $status;
+}
 ?>
