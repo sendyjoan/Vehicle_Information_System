@@ -9,6 +9,30 @@ if (!isset($_SESSION['iduser'])) {
   $id = $_SESSION['iduser'];
   $user = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE id = '$id'");
   $user = mysqli_fetch_array($user);
+  if (isset($_POST['edit'])) {
+    if (!validateEmail($_POST)) {
+      echo "<script>
+         alert('Proses Edit Profile Gagal! Email Sudah Terdaftar! Silahkan Isi Kembali Email Anda')
+         document.location.href = 'profile.php';
+           </script>";
+    }else{
+      if (editprofile($_POST) > 0) {
+        echo "
+            <script>
+              alert('Profile Berhasil Diedit!');
+              document.location.href = 'profile.php';
+            </script>
+          ";
+      } else {
+          echo "
+            <script>
+              alert('Profile Gagal Diedit!');
+              document.location.href = 'profile.php';
+            </script>
+          ";
+      }
+    }
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -184,40 +208,23 @@ if (!isset($_SESSION['iduser'])) {
                 </button>
               </div>
               <div class="modal-body">
-                <form class="form-horizontal">
+                <form action="" method="post" class="form-horizontal">
                   <div class="form-group row">
                     <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputName" placeholder="Name">
+                      <input type="text" class="form-control" id="inputName" name="nama" placeholder="Name">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                    <div class="col-sm-10">
-                      <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                      <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email">
                     </div>
                   </div>
                   <div class="form-group row">
                     <div class="offset-sm-2 col-sm-10 text-right">
-                      <button type="submit" class="btn btn-danger">Submit</button>
+                      <input type="hidden" name="idpengguna" value="<?php echo $_SESSION['iduser'] ?>">
+                      <button type="submit" name="edit" class="btn btn-danger">Submit</button>
                     </div>
                   </div>
                 </form>

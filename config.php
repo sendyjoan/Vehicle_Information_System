@@ -38,7 +38,7 @@ function validateEmail($data){
     $email = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE email = '$email'");
     $email = mysqli_num_rows($email);
 
-    if ($email === 0) {
+    if ($email == 0) {
         return true;
     } else {
         return false;
@@ -99,6 +99,21 @@ function editkendaraan($data){
     $idkendaraan = $data['idkendaraan'];
 
     $query = "UPDATE tb_kendaraan SET nopol = '$nopol', merk = '$merk', warna = '$warna', isisilinder = '$isisilinder', tahunpembuatan = '$tahunpembuatan', norangka = '$norangka', nomesin = '$nomesin' WHERE id = '$idkendaraan'";
+    mysqli_query($mysqli, $query);
+    
+    $status = mysqli_affected_rows($mysqli);
+    return $status;
+}
+
+// EDIT PROFILE
+function editprofile($data){
+    global $mysqli;
+
+    $nama = $data['nama'];
+    $email = $data['email'];
+    $id = $data['idpengguna'];
+
+    $query = "UPDATE tb_users SET nama = '$nama', email = '$email' WHERE id = '$id'";
     mysqli_query($mysqli, $query);
     
     $status = mysqli_affected_rows($mysqli);

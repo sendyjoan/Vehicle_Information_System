@@ -2,7 +2,6 @@
   $validation = true;
   if (isset($_POST['register'])) {
     include_once("config.php");
-    var_dump($_POST);
     if ($_POST['password'] === $_POST['repassword']) {
       $email = $_POST['email'];
       $result = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE email = '$email'");
