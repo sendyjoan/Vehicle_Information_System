@@ -1,3 +1,19 @@
+<?php
+  include_once("config.php");
+  session_start();
+  if (!isset($_SESSION['iduser']) && $_SESSION['isAdmin'] == 1) {
+    echo "<script>
+          document.location.href = 'login.php';
+            </script>";
+  }else{
+    //Mengambil Data User
+    $id = $_SESSION['iduser'];
+    $user = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE id = '$id'");
+    $user = mysqli_fetch_array($user);
+    //Mengambil Data Kendaraan
+    $users = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE isAdmin = 0");
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,7 +81,7 @@
           <img src="public/img/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="./profile.html" class="d-block">(Isi Nama User)</a>
+          <a href="./profile.html" class="d-block"><?php echo $user['nama'] ?></a>
         </div>
       </div>
 
@@ -166,25 +182,31 @@
                       </tr>
                   </thead>
                   <tbody>
+                    <?php while($isi = mysqli_fetch_array($users)) { ?>
                       <tr>
                           <td>
                               1
                           </td>
                           <td>
                               <a>
-                                  Retno Marsudi
+                                  <?php echo $isi['nama'] ?>
                               </a>
                           </td>
                           <td>
                               <a>
-                                Coba
+                                <?php echo $isi['email'] ?>
                               </a>
                           </td>
                           <td class="text-center">
-                              8
+                              <?php 
+                                $iduser = $isi['id'];
+                                $kepemilikan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan WHERE id_user = '$iduser'");
+                                $kepemilikan = mysqli_num_rows($kepemilikan);
+                                echo $kepemilikan;
+                              ?>
                           </td>
                           <td class="project-actions text-left">
-                              <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default">
+                              <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default-<?php echo $isi['id'] ?>">
                                   <i class="fas fa-folder">
                                   </i>
                                   View
@@ -196,6 +218,7 @@
                               </a>
                           </td>
                       </tr>
+                      <?php } ?>
                   </tbody>
               </table>
             </div>
@@ -204,7 +227,10 @@
           <!-- /.card -->
 
           <!-- modal view -->
-          <div class="modal fade" id="modal-default">
+          <?php 
+          $modals = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE isAdmin = 0");
+          while($modal = mysqli_fetch_array($modals)) { ?>
+          <div class="modal fade" id="modal-default-<?php echo $modal['id'] ?>">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
@@ -214,40 +240,38 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <h4 style="text-align: center;">Nama</h4>
-                  <p> Email : Blabla</p>
-                  <p> Jumlah Kendaraan : 8</p>
+                  <h4 style="text-align: center;"><?php echo $modal['nama'] ?></h4>
+                  <p> Email : <?php echo $modal['email'] ?></p>
+                  <p> Jumlah Kendaraan : 
+                  <?php 
+                                $miduser = $modal['id'];
+                                $mkepemilikan = mysqli_query($mysqli, "SELECT id FROM tb_kendaraan WHERE id_user = '$miduser'");
+                                $mkepemilikan = mysqli_num_rows($mkepemilikan);
+                                echo $mkepemilikan;
+                              ?>
+                  </p>
                   <p> Detail Kendaraan</p>
                   <table class="table table-striped table-dark">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                        <th scope="col">Handle</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">NOPOL</th>
+                        <th scope="col">Tahun</th>
+                        <th scope="col">Silinder</th>
+                        <th scope="col">No Rangka</th>
+                        <th scope="col">No Mesin</th>
                       </tr>
                     </thead>
                     <tbody>
+                      <?php $kendaraan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan WHERE id_user = '$miduser'"); 
+                      while ($vehicle = mysqli_fetch_array($kendaraan)) {?>
                       <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <td><?php echo $vehicle['nopol'] ?></td>
+                        <td><?php echo $vehicle['tahunpembuatan'] ?></td>
+                        <td><?php echo $vehicle['isisilinder'] ?>cc</td>
+                        <td><?php echo $vehicle['norangka'] ?></td>
+                        <td><?php echo $vehicle['nomesin'] ?></td>
                       </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                      </tr>
+                      <?php } ?>
                     </tbody>
                   </table>
                 </div>
@@ -259,6 +283,7 @@
             </div>
             <!-- /.modal-dialog -->
           </div>
+          <?php } ?>
           <!-- /.modal -->
 
           <!-- modal delete -->
