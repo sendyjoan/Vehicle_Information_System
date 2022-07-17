@@ -122,6 +122,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item menu-open">
+            <a href="./logout.php" class="nav-link">
+              <i class="nav-icon fas fa-solid fa-power-off"></i>
+              <p>
+                Logout
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
