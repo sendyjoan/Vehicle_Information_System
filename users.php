@@ -301,7 +301,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-outline-light" data-dismiss="modal">Batal</button>
-                  <button type="button" class="btn btn-outline-light">Hapus</button>
+                  <a href="index.php" class="btn btn-outline-light" role="button">Hapus</a>
                 </div>
               </div>
               <!-- /.modal-content -->
