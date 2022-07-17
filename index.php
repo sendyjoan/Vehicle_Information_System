@@ -111,6 +111,7 @@
               </p>
             </a>
           </li>
+          <?php if ($_SESSION['isAdmin'] == 1) { ?>
           <li class="nav-item menu-open">
             <a href="./users.html" class="nav-link">
               <i class="nav-icon fas fa-solid fa-users"></i>
@@ -119,6 +120,7 @@
               </p>
             </a>
           </li>
+          <?php } ?>
           <li class="nav-item menu-open">
             <a href="./vehicles.html" class="nav-link">
               <i class="nav-icon fas fa-solid fa-car"></i>
