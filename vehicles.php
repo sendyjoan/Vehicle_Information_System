@@ -1,3 +1,24 @@
+<?php
+  include_once("config.php");
+  session_start();
+  if (!isset($_SESSION['iduser'])) {
+    echo "<script>
+          document.location.href = 'login.php';
+            </script>";
+  }else{
+    // Mengambil Data User
+    $id = $_SESSION['iduser'];
+    $user = mysqli_query($mysqli, "SELECT * FROM tb_users WHERE id = '$id'");
+    $user = mysqli_fetch_array($user);
+    if ($_SESSION['isAdmin'] == 1) {
+      $kendaraan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan");
+      $modalkendaraan = mysqli_query($mysqli, "SELECT tb_kendaraan.id as id, nopol, tahunpembuatan, isisilinder, norangka, nomesin, warna, merk, nama FROM tb_kendaraan INNER JOIN tb_users ON tb_kendaraan.id_user = tb_users.id");
+    }elseif ($_SESSION['isAdmin'] == 0) {
+      $kendaraan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan WHERE id_user = '$id'");
+      $modalkendaraan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan WHERE id_user = '$id'");
+    }
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +73,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index.html" class="brand-link">
+    <a href="index.php" class="brand-link">
       <img src="public/img/favicon.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Portal | SIKKB</span>
     </a>
@@ -65,7 +86,7 @@
           <img src="public/img/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="./profile.html" class="d-block">(Isi Nama User)</a>
+          <a href="./profile.php" class="d-block"><?php echo $user['nama'] ?></a>
         </div>
       </div>
 
@@ -75,7 +96,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <a href="./index.html" class="nav-link ">
+            <a href="./index.php" class="nav-link ">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -83,7 +104,7 @@
             </a>
           </li>
           <li class="nav-item menu-open">
-            <a href="./users.html" class="nav-link">
+            <a href="./users.php" class="nav-link">
               <i class="nav-icon fas fa-solid fa-users"></i>
               <p>
                 Data Pengguna
@@ -91,7 +112,7 @@
             </a>
           </li>
           <li class="nav-item menu-open">
-            <a href="./vehicles.html" class="nav-link active">
+            <a href="./vehicles.php" class="nav-link active">
               <i class="nav-icon fas fa-solid fa-car"></i>
               <p>
                 Data Kendaraan
@@ -144,6 +165,7 @@
                 </button>
               </div>
 
+              <?php if ($_SESSION['isAdmin'] == 0) {?>
               <div class="create text-right">
                 <a class="btn btn-info btn-sm" href="#">
                   <i class="fas fa-pencil-alt">
@@ -152,63 +174,78 @@
                 </a>
               </div>
             </div>
+            <?php } ?>
             <div class="card-body p-0">
               <table class="table table-striped projects">
                   <thead>
                       <tr>
-                          <th style="width: 1%">
-                              No.
-                          </th>
-                          <th style="width: 20%">
+                          <th style="width: 16%">
                               Nomor Polisi
                           </th>
-                          <th style="width: 20%">
+                          <th style="width: 16%">
                               Merk
                           </th>
-                          <th style="width: 20%" class="text-center">
+                          <th style="width: 10%">
+                              Warna
+                          </th>
+                          <th style="width: 16%" class="text-center">
                               Isi Silinder
                           </th>
-                          <th style="width: 20%">
+                          <th style="width: 16%">
+                             Tahun Pembuatan
+                          </th>
+                          <th style="width: 22%">
                               Action
                           </th>
                       </tr>
                   </thead>
                   <tbody>
+                    <?php while($isi = mysqli_fetch_array($kendaraan)) { ?>
                       <tr>
                           <td>
-                              1
-                          </td>
-                          <td>
                               <a>
-                                  Retno Marsudi
+                                  <?php echo $isi['nopol']; ?>
                               </a>
                           </td>
                           <td>
                               <a>
-                                Coba
+                                  <?php echo $isi['merk']; ?>
+                              </a>
+                          </td>
+                          <td>
+                              <a>
+                                  <?php echo $isi['warna']; ?>
                               </a>
                           </td>
                           <td class="text-center">
-                              8
+                              <?php echo $isi['isisilinder']; ?>cc
+                          </td>
+                          <td>
+                              <a>
+                                  <?php echo $isi['tahunpembuatan']; ?>
+                              </a>
                           </td>
                           <td class="project-actions text-left">
-                              <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default">
+                              <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default-<?php echo $isi['id'] ?>">
                                   <i class="fas fa-folder">
                                   </i>
                                   View
                               </a>
+                              <?php if ($_SESSION['isAdmin'] == 0) {?>
                                 <a class="btn btn-info btn-sm" href="#">
                                   <i class="fas fa-pencil-alt">
                                   </i>
                                   Edit
-                              </a>
-                              <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-danger">
-                                  <i class="fas fa-trash">
-                                  </i>
-                                  Delete
-                              </a>
+                                </a>
+                                <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-danger">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                    Delete
+                                </a>
+                              <?php } ?>
                           </td>
                       </tr>
+                    <?php } ?>
                   </tbody>
               </table>
             </div>
@@ -217,25 +254,27 @@
           <!-- /.card -->
 
           <!-- modal view -->
-          <div class="modal fade" id="modal-default">
+          <?php while($isimodal = mysqli_fetch_array($modalkendaraan)) { ?>
+          <div class="modal fade" id="modal-default-<?php echo $isimodal['id'] ?>">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h4 class="modal-title">Detail User</h4>
+                  <h4 class="modal-title">Detail Kendaraan</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <h4 style="text-align: center;">Nomor Polisi</h4>
-                  <p> Merk : Blabla</p>
-                  <p> Isi Silinder : 8</p>
-                  <p> Warna : 2020 </p>
-                  <p> Bahan Bakar : 2020 </p>
-                  <p> Tahun Pembuatan : 2020 </p>
-                  <p> No Rangka : 2020 </p>
-                  <p> No Mesin : 2020 </p>
-                  <p> Pemiilik : 2020 </p>
+                  <h4 style="text-align: center;"><?php echo $isimodal['nopol'] ?></h4>
+                  <p> Merk : <?php echo $isimodal['merk'] ?></p>
+                  <p> Isi Silinder : <?php echo $isimodal['isisilinder'] ?></p>
+                  <p> Warna : <?php echo $isimodal['warna'] ?> </p>
+                  <p> Tahun Pembuatan : <?php echo $isimodal['tahunpembuatan'] ?> </p>
+                  <p> No Rangka : <?php echo $isimodal['norangka'] ?> </p>
+                  <p> No Mesin : <?php echo $isimodal['nomesin'] ?> </p>
+                  <?php if ($_SESSION['isAdmin'] == 1) {
+                    echo "<p> Pemiilik : " . $isimodal['nama'] . " </p>";
+                  } ?>
                 </div>
                 <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -246,6 +285,7 @@
             <!-- /.modal-dialog -->
           </div>
           <!-- /.modal -->
+          <?php } ?>
 
           <!-- modal delete -->
           <div class="modal fade" id="modal-danger">
