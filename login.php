@@ -53,6 +53,14 @@
   <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <style>
+    body{
+      background-image: url('public/img/bg-mobil.png');
+      background-repeat: no-repeat;
+      background-position: left bottom;
+      background-size: auto 50%;
+    }
+  </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -83,12 +91,6 @@
         </div>
         <div class="row">
           <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
@@ -97,16 +99,6 @@
           <!-- /.col -->
         </div>
       </form>
-
-      <div class="social-auth-links text-center mt-2 mb-3">
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-      </div>
-      <!-- /.social-auth-links -->
 
       <p class="mb-1">
         <a href="">I forgot my password</a>

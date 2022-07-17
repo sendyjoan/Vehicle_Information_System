@@ -50,6 +50,14 @@
   <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <style>
+    body{
+      background-image: url('public/img/bg-mobil.png');
+      background-repeat: no-repeat;
+      background-position: left bottom;
+      background-size: auto 50%;
+    }
+  </style>
 </head>
 <body class="hold-transition register-page">
 <div class="register-box">
@@ -103,17 +111,6 @@
           <!-- /.col -->
         </div>
       </form>
-
-      <div class="social-auth-links text-center">
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i>
-          Sign up using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i>
-          Sign up using Google+
-        </a>
-      </div>
 
       <a href="login.php" class="text-center">I already have a account</a>
     </div>
