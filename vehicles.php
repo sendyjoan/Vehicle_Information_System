@@ -63,6 +63,56 @@
             document.location.href = 'vehicles.php';
           </script>
         ";
+    }elseif (isset($_POST['upkir'])) {
+      $idkendaraan = $_POST['idkendaraan'];
+
+      $namaFile = $_FILES['gambar']['name'];
+      $error = $_FILES['gambar']['error'];
+      $tmpName = $_FILES['gambar']['tmp_name'];
+
+      // cek apakah tidak ada gambar yang diupload
+      if( $error === 4 ) {
+        echo "<script>
+            alert('Pilih gambar terlebih dahulu!');
+            document.location.href = 'vehicles.php';
+            </script>";
+      }
+
+      // cek apakah yang diupload adalah gambar
+      $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+      $ekstensiGambar = explode('.', $namaFile);
+      $ekstensiGambar = strtolower(end($ekstensiGambar));
+
+      if( !in_array($ekstensiGambar, $ekstensiGambarValid) ) {
+        echo "<script>
+            alert('yang anda upload bukan gambar!');
+            document.location.href = 'vehicles.php';
+            </script>";
+        return false;
+      }
+
+      $namaFileBaru = uniqid();
+      $namaFileBaru .= '.';
+      $namaFileBaru .= $ekstensiGambar;
+
+      move_uploaded_file($tmpName, 'public/img/ujikir/' . $namaFileBaru);
+
+      mysqli_query($mysqli, "UPDATE tb_kendaraan SET kir_dokumen = '$namaFileBaru' WHERE id = '$idkendaraan'");
+      $return = mysqli_affected_rows($mysqli);
+
+      if ($return == 1) {
+        mysqli_query($mysqli, "UPDATE tb_kendaraan SET isKir = 2 WHERE id = '$idkendaraan'");
+        echo "<script>
+            alert('Uji KIR Akan Ditinjau!');
+            document.location.href = 'vehicles.php';
+            </script>";
+      }else{
+        echo "<script>
+            alert('Data Uji KIR Gagal Diunggah');
+            document.location.href = 'vehicles.php';
+            </script>";
+      }
+
     }
     // Mengambil Data User
     $id = $_SESSION['iduser'];
@@ -70,7 +120,7 @@
     $user = mysqli_fetch_array($user);
     if ($_SESSION['isAdmin'] == 1) {
       $kendaraan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan");
-      $modalkendaraan = mysqli_query($mysqli, "SELECT tb_kendaraan.id as id, nopol, tahunpembuatan, isisilinder, norangka, nomesin, warna, merk, nama FROM tb_kendaraan INNER JOIN tb_users ON tb_kendaraan.id_user = tb_users.id");
+      $modalkendaraan = mysqli_query($mysqli, "SELECT tb_kendaraan.id as id, nopol, tahunpembuatan, isisilinder, norangka, nomesin, warna, merk, nama, kir_dokumen FROM tb_kendaraan INNER JOIN tb_users ON tb_kendaraan.id_user = tb_users.id");
     }elseif ($_SESSION['isAdmin'] == 0) {
       $kendaraan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan WHERE id_user = '$id'");
       $modalkendaraan = mysqli_query($mysqli, "SELECT * FROM tb_kendaraan WHERE id_user = '$id'");
@@ -468,8 +518,9 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Bukti KIR</span>
                       </div>
+                      <img class="rounded" width="700px;" height="500px;" src="public/img/ujikir/<?php echo $isimodal['kir_dokumen'] ?>" alt="">
                     </div>
-                    <!-- Tempat Picture -->
+                    
                       <input type="hidden" name="idkendaraan" value="<?php echo $isimodal['id'] ?>">
                       <button type="submit" name="verifikasi" class="btn btn-primary float-right">Verifikasi</button>
                       <button type="submit" name="tolak" class="btn btn-danger float-right">Tolak</button>
@@ -496,12 +547,13 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <form action="" method="post">
+                  <form action="" method="post" enctype='multipart/form-data'>
                     <h5 style="text-align: center;">Upload Dokumen KIR</h5>
                     <div class="input-group input-group-sm mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Bukti KIR</span>
                       </div>
+                      <input type="file" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="gambar" required>
                     </div>
                     <!-- Tempat Picture -->
                       <input type="hidden" name="idkendaraan" value="<?php echo $isimodal['id'] ?>">
