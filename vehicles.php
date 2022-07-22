@@ -45,6 +45,24 @@
           </script>
         ";
     }
+    }elseif (isset($_POST['verifikasi'])) {
+      $idkendaraan = $_POST['idkendaraan'];
+      mysqli_query($mysqli, "UPDATE tb_kendaraan SET isKir = '1' WHERE id = '$idkendaraan'");
+      echo "
+          <script>
+            alert('Kendaraan Berhasil Verifikasi KIR!');
+            document.location.href = 'vehicles.php';
+          </script>
+        ";
+    }elseif (isset($_POST['tolak'])) {
+      $idkendaraan = $_POST['idkendaraan'];
+      mysqli_query($mysqli, "UPDATE tb_kendaraan SET isKir = '4' WHERE id = '$idkendaraan'");
+      echo "
+          <script>
+            alert('Kendaraan Ditolak Verifikasi KIR!');
+            document.location.href = 'vehicles.php';
+          </script>
+        ";
     }
     // Mengambil Data User
     $id = $_SESSION['iduser'];
@@ -200,7 +218,6 @@
     <section class="content">
       <div class="container-fluid">
         <section class="content">
-
           <!-- Default box -->
           <div class="card">
             <div class="card-header">
@@ -238,11 +255,14 @@
                           <th style="width: 10%">
                               Warna
                           </th>
-                          <th style="width: 16%" class="text-center">
+                          <th style="width: 6%" class="text-center">
                               Isi Silinder
                           </th>
                           <th style="width: 16%">
-                             Tahun Pembuatan
+                              Tahun Pembuatan
+                          </th>
+                          <th style="width: 10%;">
+                              Status KIR
                           </th>
                           <th style="width: 22%">
                               Action
@@ -275,6 +295,19 @@
                                   <?php echo $isi['tahunpembuatan']; ?>
                               </a>
                           </td>
+                          <td class="project-state">
+                            <?php
+                              if ($isi['isKir'] == 1) {
+                                echo '<span class="badge badge-success">Terverifikasi</span>';
+                              } elseif ($isi['isKir'] == 2) {
+                                echo '<span class="badge badge-info">Proses Verifikasi</span>';
+                              }elseif ($isi['isKir'] == 3){
+                                echo '<span class="badge badge-danger">Belum Terverifikasi</span>';
+                              }else{
+                                echo '<span class="badge badge-danger">Gagal Verifikasi</span>';
+                              }
+                            ?>
+                          </td>
                           <td class="project-actions text-left">
                               <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default-<?php echo $isi['id'] ?>">
                                   <i class="fas fa-folder">
@@ -292,7 +325,16 @@
                                     </i>
                                     Delete
                                 </a>
-                              <?php } ?>
+                              <?php } 
+                                if ($_SESSION['isAdmin'] == 1) {
+                                  ?>
+                                  <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-verifikasi-<?php echo $isi['id'] ?>">
+                                    <i class="fas fa-pencil-alt"></i>
+                                  Verifikasi KIR
+                                  </a>
+                                  <?php
+                                }
+                              ?>
                           </td>
                       </tr>
                     <?php } ?>
@@ -393,6 +435,40 @@
                     </div>
                       <input type="hidden" name="idkendaraan" value="<?php echo $isimodal['id'] ?>">
                       <button type="submit" name="edit" class="btn btn-primary float-right">Submit</button>
+                    </div>
+                  </form>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+
+          <!-- modal delete -->
+          <div class="modal fade" id="modal-verifikasi-<?php echo $isimodal['id'] ?>">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Edit Kendaraan</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="" method="post">
+                    <h5 style="text-align: center;">Verifikasi KIR</h5>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Bukti KIR</span>
+                      </div>
+                    </div>
+                    <!-- Tempat Picture -->
+                      <input type="hidden" name="idkendaraan" value="<?php echo $isimodal['id'] ?>">
+                      <button type="submit" name="verifikasi" class="btn btn-primary float-right">Verifikasi</button>
+                      <button type="submit" name="tolak" class="btn btn-danger float-right">Tolak</button>
                     </div>
                   </form>
                     <div class="modal-footer justify-content-between">
