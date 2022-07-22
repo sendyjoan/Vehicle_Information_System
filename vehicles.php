@@ -325,6 +325,10 @@
                                     </i>
                                     Delete
                                 </a>
+                                <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-kir-<?php echo $isi['id'] ?>">
+                                    <i class="fas fa-pencil-alt"></i>
+                                  Upload KIR
+                                  </a>
                               <?php } 
                                 if ($_SESSION['isAdmin'] == 1) {
                                   ?>
@@ -469,6 +473,39 @@
                       <input type="hidden" name="idkendaraan" value="<?php echo $isimodal['id'] ?>">
                       <button type="submit" name="verifikasi" class="btn btn-primary float-right">Verifikasi</button>
                       <button type="submit" name="tolak" class="btn btn-danger float-right">Tolak</button>
+                    </div>
+                  </form>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+
+          <!-- modal delete -->
+          <div class="modal fade" id="modal-kir-<?php echo $isimodal['id'] ?>">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Upload Dokumen KIR</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="" method="post">
+                    <h5 style="text-align: center;">Upload Dokumen KIR</h5>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Bukti KIR</span>
+                      </div>
+                    </div>
+                    <!-- Tempat Picture -->
+                      <input type="hidden" name="idkendaraan" value="<?php echo $isimodal['id'] ?>">
+                      <button type="submit" name="upkir" class="btn btn-primary float-right">Upload Bukti</button>
                     </div>
                   </form>
                     <div class="modal-footer justify-content-between">
