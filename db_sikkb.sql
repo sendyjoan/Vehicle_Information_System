@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 17, 2022 at 06:16 PM
+-- Generation Time: Jul 23, 2022 at 12:39 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -24,45 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_bahanbakar`
---
-
-CREATE TABLE `tb_bahanbakar` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `tb_bahanbakar`
---
-
-INSERT INTO `tb_bahanbakar` (`id`, `nama`) VALUES
-(1, 'Premium'),
-(2, 'Pertalite'),
-(3, 'Pertamax');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_jeniskendaraan`
---
-
-CREATE TABLE `tb_jeniskendaraan` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `tb_jeniskendaraan`
---
-
-INSERT INTO `tb_jeniskendaraan` (`id`, `nama`) VALUES
-(1, 'Motor'),
-(2, 'Mobil');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tb_kendaraan`
 --
 
@@ -75,6 +36,8 @@ CREATE TABLE `tb_kendaraan` (
   `nomesin` varchar(15) NOT NULL,
   `warna` varchar(10) NOT NULL,
   `merk` varchar(10) NOT NULL,
+  `isKir` int(11) NOT NULL DEFAULT 3,
+  `kir_dokumen` varchar(225) DEFAULT NULL,
   `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -82,8 +45,9 @@ CREATE TABLE `tb_kendaraan` (
 -- Dumping data for table `tb_kendaraan`
 --
 
-INSERT INTO `tb_kendaraan` (`id`, `nopol`, `tahunpembuatan`, `isisilinder`, `norangka`, `nomesin`, `warna`, `merk`, `id_user`) VALUES
-(8, 'RI 1', 2018, 1200, 'KFHTIE345', 'MOB234FG', 'Hitam', 'Mercedes B', 12);
+INSERT INTO `tb_kendaraan` (`id`, `nopol`, `tahunpembuatan`, `isisilinder`, `norangka`, `nomesin`, `warna`, `merk`, `isKir`, `kir_dokumen`, `id_user`) VALUES
+(8, 'AG 3445 YBF', 2020, 150, 'RANGKA', 'MESIN', 'Hitam', 'Honda', 1, '62db22cde9708.png', 12),
+(11, 'N 1234 TF', 2021, 1200, 'NO.RANGKA', 'NO.MESIN', 'Putih', 'Honda', 1, '62db237e91b3d.png', 12);
 
 -- --------------------------------------------------------
 
@@ -105,23 +69,12 @@ CREATE TABLE `tb_users` (
 
 INSERT INTO `tb_users` (`id`, `nama`, `email`, `password`, `isAdmin`) VALUES
 (11, 'Administrator Aplikasi', 'administrator@email.com', '$2y$10$feul4NgiDIJ3BkXhh8Sxg./M.5DYPmaQKBWjH4fWM5qF5MxLmRo0C', 1),
-(12, 'Pengguna Aplikasi', 'pengguna@email.com', '$2y$10$UhRcsSF1hTAKuBQleCxxquw2pI4GO6fodfiKat1t8pKpL.qN.hBYK', 0);
+(12, 'Pengguna Aplikasi', 'pengguna@email.com', '$2y$10$UhRcsSF1hTAKuBQleCxxquw2pI4GO6fodfiKat1t8pKpL.qN.hBYK', 0),
+(13, 'Johansen', 'johan@email.com', '$2y$10$nbN4IpGVrHDtdUSJC4LjHuXS/YH/4Wk63ue5X1oMbHWDzWC9hsyf6', 0);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `tb_bahanbakar`
---
-ALTER TABLE `tb_bahanbakar`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `tb_jeniskendaraan`
---
-ALTER TABLE `tb_jeniskendaraan`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tb_kendaraan`
@@ -141,28 +94,16 @@ ALTER TABLE `tb_users`
 --
 
 --
--- AUTO_INCREMENT for table `tb_bahanbakar`
---
-ALTER TABLE `tb_bahanbakar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `tb_jeniskendaraan`
---
-ALTER TABLE `tb_jeniskendaraan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT for table `tb_kendaraan`
 --
 ALTER TABLE `tb_kendaraan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_users`
 --
 ALTER TABLE `tb_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
